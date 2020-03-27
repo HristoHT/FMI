@@ -26,6 +26,8 @@ class String
     }
 
 
+
+public:
     void addb(const char &ch)
     {
         char *newData = new char[len + 1];
@@ -56,8 +58,6 @@ class String
         len++;
     }
 
-
-public:
     String concat(String other)
     {
         String newString;
@@ -67,7 +67,6 @@ public:
         for(size_t i = 0; i < other.lngth(); i ++)
             newString += other[i];
 
-        cout << newString.lngth() << endl;
         return newString;
     }
 
@@ -106,16 +105,27 @@ public:
         return *this;
     }
 
-    String &operator += (const char &ch)
+    String &operator += (const char ch)
     {
         addb(ch);
         return *this;
+    }
+
+    String &operator += (String other){
+         for(size_t i = 0; i < other.lngth(); i ++)
+            *this += other[i];
     }
 
     String operator + (const char &ch)
     {
         String newString(*this);
         newString += ch;
+        return newString;
+    }
+
+    String operator + (String other){
+        String newString(*this);
+        newString += other;
         return newString;
     }
 
@@ -147,13 +157,20 @@ public:
 
 };
 
+String operator + (char ch, const String &other){
+    String newString(other);
+    newString.addf(ch);
+    return newString;
+}
+
 int main()
 {
+    String a = "1", b = "2", c = "3", d = "4";
 
-    String b = "12345", c = b, d = c;
+    d += a + b.concat(c);
 
-    c.print();
-    b.print();
-
+    d = '-' + d + '-';
+    cout << 1 << endl;
+    d.print();
     return 0;
 }
