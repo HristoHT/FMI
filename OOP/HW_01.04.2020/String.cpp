@@ -58,7 +58,7 @@ class String
 
 
 public:
-    String &concat(String other)
+    String concat(String other)
     {
         String newString;
 
@@ -70,6 +70,7 @@ public:
         cout << newString.lngth() << endl;
         return newString;
     }
+
     String()
     {
         copyString("");
@@ -91,6 +92,7 @@ public:
         print();
         delete[] data;
     }
+
 
     String operator = (const char *str)
     {
@@ -149,10 +151,7 @@ int main()
 {
 
     String b = "12345", c = b, d = c;
-    cout << "before\n";
-    c = "abcd";
-    cout << "after\n";
-    //c = b.concat(c);
+
     c.print();
     b.print();
 
