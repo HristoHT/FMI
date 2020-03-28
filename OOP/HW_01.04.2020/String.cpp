@@ -28,43 +28,13 @@ class String
 
 
 public:
-    void addb(const char &ch)
-    {
-        char *newData = new char[len + 1];
-        for (size_t i = 0; i < len; i++)
-        {
-            newData[i] = data[i];
-        }
-        newData[len] = ch;
-        newData[len + 1] = '\0';
-
-        delete[] data;
-        data = newData;
-        len++;
-    }
-
-    void addf(const char &ch)
-    {
-        char *newData = new char[len + 1];
-        newData[0] = ch;
-        for (size_t i = 1; i <= len; i++)
-        {
-            newData[i] = data[i - 1];
-        }
-        newData[len + 1] = '\0';
-
-        delete[] data;
-        data = newData;
-        len++;
-    }
-
     String concat(String other)
     {
         String newString;
 
         for(size_t i = 0; i < len; i ++)
             newString += data[i];
-        for(size_t i = 0; i < other.lngth(); i ++)
+        for(size_t i = 0; i < other.length(); i ++)
             newString += other[i];
 
         return newString;
@@ -101,7 +71,8 @@ public:
 
     String operator = (const String &other)
     {
-        copyString(other);
+        if(&other != this)
+            copyString(other);
         return *this;
     }
 
@@ -111,8 +82,9 @@ public:
         return *this;
     }
 
-    String &operator += (String other){
-         for(size_t i = 0; i < other.lngth(); i ++)
+    String &operator += (String other)
+    {
+        for(size_t i = 0; i < other.length(); i ++)
             *this += other[i];
     }
 
@@ -123,10 +95,34 @@ public:
         return newString;
     }
 
-    String operator + (String other){
+    String operator + (String other)
+    {
         String newString(*this);
         newString += other;
         return newString;
+    }
+
+    String operator -- (const int h)
+    {
+        return  popb();
+    }
+
+    String operator -- ()
+    {
+        return  popf();
+    }
+
+    bool operator == (String other)//Comparison
+    {
+        if(len != other.length())
+            return false;
+        else
+        {
+            for(size_t i = 0; i < len; i ++)
+                if(data[i] != other[i])
+                    return false;
+        }
+        return true;
     }
 
     char operator [] (const size_t &pos) const
@@ -137,6 +133,90 @@ public:
     char &operator [] (const size_t &pos)
     {
         return data[pos];
+    }
+
+    void addb(const char &ch)//Add back
+    {
+        char *newData = new char[len + 1];
+        for (size_t i = 0; i < len; i++)
+        {
+            newData[i] = data[i];
+        }
+        newData[len] = ch;
+        newData[len + 1] = '\0';
+
+        delete[] data;
+        data = newData;
+        len++;
+    }
+
+    void addf(const char &ch)//Add front
+    {
+        char *newData = new char[len + 1];
+        newData[0] = ch;
+        for (size_t i = 1; i <= len; i++)
+        {
+            newData[i] = data[i - 1];
+        }
+        newData[len + 1] = '\0';
+
+        delete[] data;
+        data = newData;
+        len++;
+    }
+
+    String substr(const size_t &st, const size_t &length)
+    {
+        String newString;
+
+        for(size_t i = st; i < min(st + length, len); i ++)
+        {
+            newString += data[i];
+        }
+
+        return newString;
+    }
+
+    String popf() // Pop front
+    {
+        char *newData = new char[len - 1];
+        String toReturn = substr(0, 1);
+
+        for (size_t i = 1; i < len; i++)
+        {
+            newData[i - 1] = data[i];
+        }
+        newData[len - 1] = '\0';
+
+        delete[] data;
+        data = newData;
+        len--;
+        cout << "toRetrurn:";
+        toReturn.print();
+        return toReturn;
+    }
+
+    String popb() // Pop back
+    {
+        char *newData = new char[len - 1];
+        String toReturn = substr(len - 1, 1);
+
+        for (size_t i = 0; i < len - 1; i++)
+        {
+            newData[i] = data[i];
+        }
+        newData[len - 1] = '\0';
+
+        delete[] data;
+        data = newData;
+        len--;
+
+        return toReturn;
+    }
+
+    int indexOf(const String &str)const
+    {
+
     }
 
     void print()
@@ -150,14 +230,15 @@ public:
         cout << endl;
     }
 
-    int lngth()
+    int length()
     {
         return len;
     }
 
 };
 
-String operator + (char ch, const String &other){
+String operator + (char ch, const String &other)
+{
     String newString(other);
     newString.addf(ch);
     return newString;
@@ -170,7 +251,10 @@ int main()
     d += a + b.concat(c);
 
     d = '-' + d + '-';
-    cout << 1 << endl;
+    d.print();
+
+    --d--;
+
     d.print();
     return 0;
 }
