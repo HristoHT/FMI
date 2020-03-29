@@ -1,5 +1,6 @@
 #include<iostream>
 #include<cstring>
+#include<vector>
 using namespace std;
 
 class String
@@ -57,8 +58,8 @@ public:
 
     ~String()
     {
-        cout << "Desroyed string: ";
-        print();
+        //cout << "Desroyed string: ";
+        //print();
         delete[] data;
     }
 
@@ -112,7 +113,7 @@ public:
         return  popf();
     }
 
-    bool operator == (String other)//Comparison
+    bool operator == (const String &other)const//Comparison
     {
         if(len != other.length())
             return false;
@@ -123,6 +124,11 @@ public:
                     return false;
         }
         return true;
+    }
+
+    bool operator != (const String &other)const
+    {
+        return !(*this==other);
     }
 
     char operator [] (const size_t &pos) const
@@ -214,9 +220,24 @@ public:
         return toReturn;
     }
 
-    int indexOf(const String &str)const
+    int indexOf(String str)
     {
+        size_t compLen = str.length();
+        String newString = substr(0, compLen);
 
+
+        for(size_t i = compLen; i <= len; i ++)
+        {
+            if(newString == str)
+                return i - compLen;
+
+            --newString;
+
+            if(i < len)
+                newString+=data[i];
+        }
+
+        return -1;
     }
 
     void print()
@@ -230,9 +251,15 @@ public:
         cout << endl;
     }
 
-    int length()
+    int length()const
     {
         return len;
+    }
+
+    void setData(char *newData){
+        delete[] data;
+        data = newData;
+        len = strlen(newData);
     }
 
 };
@@ -244,17 +271,61 @@ String operator + (char ch, const String &other)
     return newString;
 }
 
+String operator + (char first[], String &other)
+{
+    char *newData = new char[strlen(first) + other.length()];
+    String newString;
+    int lenFirst = strlen(first);
+
+    for(size_t i = 0; i < lenFirst; i++)newData[i] =  first[i];
+    for(size_t i = 0; i < other.length(); i++)newData[i + lenFirst] =  other[i];
+    newData[lenFirst + other.length()] = '\0';
+    newString.setData(newData);
+    return newString;
+}
+
+vector<String> split(String toSplit, String str)
+{
+    String newCopy(toSplit);
+    size_t newLen = 0, nextPos = newCopy.indexOf(str);
+    vector <int> pos;
+
+    //pos.push_back(-1);
+    while(nextPos != -1)
+    {
+        pos.push_back(nextPos);
+        newCopy = newCopy.substr(nextPos + 1, newCopy.length());
+        nextPos = newCopy.indexOf(str);
+        if(newCopy.indexOf(str) == -1)
+            nextPos = -1;
+    }
+    pos.push_back(newCopy.length());
+
+    vector<String> newVector;
+    int st = 0;
+    for(size_t i = 0; i < pos.size(); i ++)
+    {
+        newVector.push_back(toSplit.substr(st, pos[i]));
+        st += pos[i] + 1;
+    }
+
+    return newVector;
+}
+
 int main()
 {
-    String a = "1", b = "2", c = "3", d = "4";
+    String a = "1", b = "2", c = "3", d = "4", *arr;
 
-    d += a + b.concat(c);
-
-    d = '-' + d + '-';
+    d = '-' + a + "-" + b + "--" + c + "-" + d+ "-";
     d.print();
 
-    --d--;
+    vector<String> z = split(d, "-");
 
-    d.print();
+    for(size_t i = 0; i < z.size(); i ++)
+    {
+        z[i].print();
+    }
+
+    //d[0].print();
     return 0;
 }
