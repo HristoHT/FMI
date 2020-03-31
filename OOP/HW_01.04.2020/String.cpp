@@ -1,6 +1,7 @@
+#define DOCTEST_CONFIG_IMPLEMENT
+#include "doctest.h"
 #include<iostream>
 #include<cstring>
-#include<vector>
 using namespace std;
 
 class String
@@ -14,7 +15,7 @@ class String
 
         for(size_t i = 0; i < len; i ++)
         {
-            strng[i] = str[i];
+            strng[i] = *(str + i);
         }
         strng[len] = '\0';
 
@@ -64,7 +65,7 @@ public:
         delete[] data;
     }
 
-    String operator = (const char *str)
+    String operator = (char *str)
     {
         copyString(str);
         return *this;
@@ -352,7 +353,6 @@ String join(String *splitedStrings, size_t length, String joiner)
 
 ostream &operator << (ostream& stream, const String &v)
 {
-
     for (size_t i = 0; i < v.length(); i++)
     {
         stream << v[i];
@@ -360,16 +360,150 @@ ostream &operator << (ostream& stream, const String &v)
     return stream;
 }
 
+
+TEST_CASE("Constructor Test")
+{
+    String a = "ab";
+    CHECK(a == "ab");
+    String b = a, c(a);
+    CHECK(b == a);
+    CHECK(c == a);
+}
+
+TEST_CASE("Concat Test")
+{
+    String a = "ab";
+    String b = a, c(a);
+
+    c = a.concat(b);
+
+    CHECK(c == "abab");
+}
+
+TEST_CASE("Destructor Test")
+{
+    {
+        String a = "abcd";
+    }
+    String b = "1234";
+
+    CHECK(b != "abcd");
+    CHECK(b == "1234");
+}
+
+TEST_CASE("Operator =")
+{
+    String a = "ab";
+    String b = a;
+
+    CHECK(a == b);
+    b[0] = 1;
+
+    CHECK(a != b);
+    a[0] = 'a';
+
+    CHECK( a != b);
+
+    CHECK(a.length() == b.length());
+}
+
+TEST_CASE("Operator +")
+{
+    String a;
+
+    a = a + 'a';
+    CHECK(a == "a");
+
+    a = a + "ab";
+    CHECK(a == "aab");
+
+    a = a + a;
+    CHECK(a == "aabaab");
+
+    String b = '1' + a + '1';
+    CHECK( b == "1aabaab1");
+}
+
+TEST_CASE("Operator +=")
+{
+    String a;
+
+    a += 'a';
+    CHECK(a == "a");
+
+    a += "ab";
+    CHECK(a == "aab");
+
+    a += a;
+    CHECK(a == "aabaab");
+}
+
+TEST_CASE("Operator --")
+{
+    String a = "12345678";
+
+    CHECK(a-- == "8");
+    CHECK(a == "1234567");
+    CHECK(--a == "1");
+    CHECK(a == "234567");
+}
+
+TEST_CASE("Operator []")
+{
+    String a = "1234", b;
+
+    b = &a[0];
+    CHECK(&b[0] != &a[0]);
+    CHECK(b[0] == a[0]);
+
+    a[0] = 'a';
+    CHECK(a == "a234");
+}
+
+TEST_CASE("Function substr")
+{
+    String a = "1234";
+
+    CHECK(a.substr(0, 0) == "");
+    CHECK(a.substr(0, 1) == "1");
+    CHECK(a.substr(1, 1) == "2");
+    CHECK(a.substr(0, 6) == a);
+    CHECK(a.substr(0, 6) == "1234");
+}
+
+TEST_CASE("Function indexOf")
+{
+    String a = "1234";
+
+    CHECK(a.indexOf("1") == 0);
+    CHECK(a.indexOf("3") == 2);
+    CHECK(a.indexOf("0") == -1);
+
+    a[1] = 'z';
+    CHECK(a.indexOf("2") == -1);
+}
+
+TEST_CASE("Function split")
+{
+    size_t splitedArrLen;
+    String a = "1-2-3-4", *b = a.split("-", splitedArrLen);
+
+    for(size_t i = 0; i < splitedArrLen; i ++)
+    {
+        String z = a + i;
+        z.print();
+       //CHECK(b[i] == z);
+    }
+
+
+    //cout << b[0] << endl;
+    //CHECK(b[0] == "1");
+}
+
+
 int main()
 {
-    String a = "z-a-b-c", *b, c, d;
-    size_t len;
-    b = a.split("-", len);
-    d = a.caseInsensitive();
-    cout << "Len = " << len << endl;
-    c =join(b, len, "-");
-    cout << d << endl;
-    cout << *(b + 1) << endl;
+    doctest::Context().run();
 
     return 0;
 }
