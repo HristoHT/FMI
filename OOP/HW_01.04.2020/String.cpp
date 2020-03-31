@@ -60,9 +60,9 @@ public:
     {
         //cout << "Desroyed string: ";
         //print();
+        //cout << "Destroyed pointer: " << &data << endl;
         delete[] data;
     }
-
 
     String operator = (const char *str)
     {
@@ -74,6 +74,8 @@ public:
     {
         if(&other != this)
             copyString(other);
+
+        //cout << "Length: " << len << endl;
         return *this;
     }
 
@@ -141,6 +143,54 @@ public:
         return data[pos];
     }
 
+    String substr(const size_t &st, const size_t &length)
+    {
+        String newString;
+
+        for(size_t i = st; i < min(st + length, len); i ++)
+        {
+            newString += data[i];
+        }
+
+        return newString;
+    }
+
+    String popf() // Pop front
+    {
+        char *newData = new char[len - 1];
+        String toReturn = substr(0, 1);
+
+        for (size_t i = 1; i < len; i++)
+        {
+            newData[i - 1] = data[i];
+        }
+        newData[len - 1] = '\0';
+
+        delete[] data;
+        data = newData;
+        len--;
+
+        return toReturn;
+    }
+
+    String popb() // Pop back
+    {
+        char *newData = new char[len - 1];
+        String toReturn = substr(len - 1, 1);
+
+        for (size_t i = 0; i < len - 1; i++)
+        {
+            newData[i] = data[i];
+        }
+        newData[len - 1] = '\0';
+
+        delete[] data;
+        data = newData;
+        len--;
+
+        return toReturn;
+    }
+
     void addb(const char &ch)//Add back
     {
         char *newData = new char[len + 1];
@@ -169,55 +219,6 @@ public:
         delete[] data;
         data = newData;
         len++;
-    }
-
-    String substr(const size_t &st, const size_t &length)
-    {
-        String newString;
-
-        for(size_t i = st; i < min(st + length, len); i ++)
-        {
-            newString += data[i];
-        }
-
-        return newString;
-    }
-
-    String popf() // Pop front
-    {
-        char *newData = new char[len - 1];
-        String toReturn = substr(0, 1);
-
-        for (size_t i = 1; i < len; i++)
-        {
-            newData[i - 1] = data[i];
-        }
-        newData[len - 1] = '\0';
-
-        delete[] data;
-        data = newData;
-        len--;
-        cout << "toRetrurn:";
-        toReturn.print();
-        return toReturn;
-    }
-
-    String popb() // Pop back
-    {
-        char *newData = new char[len - 1];
-        String toReturn = substr(len - 1, 1);
-
-        for (size_t i = 0; i < len - 1; i++)
-        {
-            newData[i] = data[i];
-        }
-        newData[len - 1] = '\0';
-
-        delete[] data;
-        data = newData;
-        len--;
-
-        return toReturn;
     }
 
     int indexOf(String str)
@@ -256,12 +257,61 @@ public:
         return len;
     }
 
-    void setData(char *newData){
+    void setLength()
+    {
+        len = strlen(data);
+    }
+
+    void setData(char *newData)
+    {
         delete[] data;
         data = newData;
         len = strlen(newData);
     }
 
+    String *split(String str, size_t &length)
+    {
+        String newCopy(*this);
+        size_t newLen = 0, nextPos = newCopy.indexOf(str);
+        vector <int> pos;
+
+        while(nextPos != -1)
+        {
+            pos.push_back(nextPos);
+            newCopy = newCopy.substr(nextPos + 1, newCopy.length());
+            nextPos = newCopy.indexOf(str);
+            if(newCopy.indexOf(str) == -1)
+                nextPos = -1;
+        }
+        pos.push_back(newCopy.length());
+
+        String *arr = new String[pos.size()];
+        int st = 0;
+
+        for(size_t i = 0; i < pos.size(); i ++)
+        {
+            arr[i] = substr(st, pos[i]);
+            st += pos[i] + 1;
+        }
+
+        length = pos.size();
+        return arr;
+    }
+
+    String caseInsensitive()
+    {
+        String newString;
+
+        for(size_t i = 0; i < len; i ++)
+        {
+            if((data[i] - 'a') >= 0 && (data[i] - 'a') <= 25)
+                newString += (data[i] - 'a') + 'A';
+            else
+                newString += data[i];
+        }
+
+        return newString;
+    }
 };
 
 String operator + (char ch, const String &other)
@@ -277,55 +327,49 @@ String operator + (char first[], String &other)
     String newString;
     int lenFirst = strlen(first);
 
-    for(size_t i = 0; i < lenFirst; i++)newData[i] =  first[i];
-    for(size_t i = 0; i < other.length(); i++)newData[i + lenFirst] =  other[i];
+    for(size_t i = 0; i < lenFirst; i++)
+        newData[i] =  first[i];
+
+    for(size_t i = 0; i < other.length(); i++)
+        newData[i + lenFirst] =  other[i];
+
     newData[lenFirst + other.length()] = '\0';
     newString.setData(newData);
+
     return newString;
 }
 
-vector<String> split(String toSplit, String str)
+String join(String *splitedStrings, size_t length, String joiner)
 {
-    String newCopy(toSplit);
-    size_t newLen = 0, nextPos = newCopy.indexOf(str);
-    vector <int> pos;
+    String newString = splitedStrings[0];
 
-    //pos.push_back(-1);
-    while(nextPos != -1)
+    for(size_t i = 1; i < length; i ++)
+        newString += joiner + splitedStrings[i];
+
+
+    return newString;
+}
+
+ostream &operator << (ostream& stream, const String &v)
+{
+
+    for (size_t i = 0; i < v.length(); i++)
     {
-        pos.push_back(nextPos);
-        newCopy = newCopy.substr(nextPos + 1, newCopy.length());
-        nextPos = newCopy.indexOf(str);
-        if(newCopy.indexOf(str) == -1)
-            nextPos = -1;
+        stream << v[i];
     }
-    pos.push_back(newCopy.length());
-
-    vector<String> newVector;
-    int st = 0;
-    for(size_t i = 0; i < pos.size(); i ++)
-    {
-        newVector.push_back(toSplit.substr(st, pos[i]));
-        st += pos[i] + 1;
-    }
-
-    return newVector;
+    return stream;
 }
 
 int main()
 {
-    String a = "1", b = "2", c = "3", d = "4", *arr;
+    String a = "z-a-b-c", *b, c, d;
+    size_t len;
+    b = a.split("-", len);
+    d = a.caseInsensitive();
+    cout << "Len = " << len << endl;
+    c =join(b, len, "-");
+    cout << d << endl;
+    cout << *(b + 1) << endl;
 
-    d = '-' + a + "-" + b + "--" + c + "-" + d+ "-";
-    d.print();
-
-    vector<String> z = split(d, "-");
-
-    for(size_t i = 0; i < z.size(); i ++)
-    {
-        z[i].print();
-    }
-
-    //d[0].print();
     return 0;
 }
