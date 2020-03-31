@@ -71,6 +71,16 @@ public:
         return *this;
     }
 
+    /*String operator = (char ch)
+    {
+        char *newData = new char[1];
+        newData[0] = ch;
+        newData[1] = '\0';
+
+        delete[] data;
+        data = newData;
+    }*/
+
     String operator = (const String &other)
     {
         if(&other != this)
@@ -393,7 +403,7 @@ TEST_CASE("Destructor Test")
 
 TEST_CASE("Operator =")
 {
-    String a = "ab";
+    String a = "abcd";
     String b = a;
 
     CHECK(a == b);
@@ -485,21 +495,49 @@ TEST_CASE("Function indexOf")
 
 TEST_CASE("Function split")
 {
-    size_t splitedArrLen;
+    size_t splitedArrLen, pos = 0;
     String a = "1-2-3-4", *b = a.split("-", splitedArrLen);
 
     for(size_t i = 0; i < splitedArrLen; i ++)
     {
-        String z = a + i;
-        z.print();
-       //CHECK(b[i] == z);
+        CHECK(b[i] == a.substr(pos, 1));
+        pos += 2;
     }
-
-
-    //cout << b[0] << endl;
-    //CHECK(b[0] == "1");
 }
 
+TEST_CASE("Function caseInsensitive")
+{
+    String a = "a-B-c0";
+    a = a.caseInsensitive();
+
+    CHECK(a == "A-B-C0");
+}
+
+TEST_CASE("Function caseInsensitive")
+{
+    String a = "a-B-c0";
+    a = a.caseInsensitive();
+
+    CHECK(a == "A-B-C0");
+}
+
+TEST_CASE("Function join")
+{
+    String a = "a-b-c0", *b, c;
+    size_t len;
+
+    b = a.split("-", len);
+    c = join(b, len, "--");
+    CHECK(c == "a--b--c0");
+
+    b = c.split("-", len);
+    c = join(b, len, "");
+
+    CHECK(b[0] == "a");
+    CHECK(b[1] == "");
+
+    CHECK(c == "abc0");
+}
 
 int main()
 {
