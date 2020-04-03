@@ -65,13 +65,13 @@ public:
         delete[] data;
     }
 
-    String operator = (char *str)
+    String &operator = (char *str)
     {
         copyString(str);
         return *this;
     }
 
-    /*String operator = (char ch)
+   String operator = (char ch)
     {
         char *newData = new char[1];
         newData[0] = ch;
@@ -79,7 +79,7 @@ public:
 
         delete[] data;
         data = newData;
-    }*/
+    }
 
     String operator = (const String &other)
     {
