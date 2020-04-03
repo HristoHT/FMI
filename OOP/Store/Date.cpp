@@ -78,16 +78,16 @@ Date::Date(std::string year = "", std::string month = "", std::string day = "",
 {
     setValue(_year, year, 4, ltm->tm_year + 1900);
     setValue(_month, month, 2, ltm->tm_mon + 1);
-    setValue(_day, day, 2, ltm->tm_yday + 1);
+    setValue(_day, day, 2, ltm->tm_mday + 1);
 
     setValue(_h, h, 2, ltm->tm_hour + 1);
     setValue(_m, m, 2, ltm->tm_min + 1);
     setValue(_s, s, 2, ltm->tm_sec + 1);
 }
 
-int main()
+/*int main()
 {
-    Date a, b("1", "2", "3", "", "-2", "");
+    Date a, b("1", "2", "3", "", "", "");
     std::cout << a.getDate() << " " << a.getTime() << std::endl;
     std::cout << b.getDate() << " " << b.getTime() << std::endl;
     std::cout << (a < b) << std::endl;
@@ -96,7 +96,7 @@ int main()
     std::cout << (a != b) << std::endl;
     std::cout << (a >= b) << std::endl;
     std::cout << (a <= b) << std::endl;
-}
+}*/
 
 
 std::string toString(int number)
@@ -170,5 +170,6 @@ void setValue(std::string &inClassVar, std::string value, int precision, int def
     else
         inClassVar = padStart(value, precision, "0");
 }
+
 
 #endif

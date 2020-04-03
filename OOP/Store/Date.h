@@ -26,4 +26,5 @@ int toInt(std::string str);
 std::string toString(int number);
 std::string padStart(std::string member, int count, std::string str);
 
+
 #endif // __DATE_H
