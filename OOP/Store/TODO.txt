@@ -1,5 +1,4 @@
-﻿Class Date:
-function toInt 
+﻿function toInt 
 	- da proverqva ako izliza ot int
 	- da go napravq za double
 
@@ -8,3 +7,7 @@ function inputStringFromConsole
 
 function readNumberFromConsole
 	- ima problem kogato vmesto double se vavede string 
+
+operator >> 
+	- trqbva da go napravq i da dorashirq read...FromConsole da priema i istream 
+
