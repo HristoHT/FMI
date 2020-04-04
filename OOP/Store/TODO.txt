@@ -1,0 +1,10 @@
+﻿Class Date:
+function toInt 
+	- da proverqva ako izliza ot int
+	- da go napravq za double
+
+function inputStringFromConsole
+	- ima nqkav problem sas cin.ignore()-a i chete s edin char po-malko ot stringa
+
+function readNumberFromConsole
+	- ima problem kogato vmesto double se vavede string 

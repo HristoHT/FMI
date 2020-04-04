@@ -12,6 +12,7 @@ public:
     Date(std::string year /*= ""*/, std::string month /*= ""*/, std::string day /*= ""*/, std::string h /*= ""*/, std::string m /*= ""*/, std::string s /*= ""*/);
     std::string getDate();
     std::string getTime();
+    Date operator = (const Date &other);
     bool operator < (Date &other)const;
     bool operator > (Date& other)const;
     bool operator == (Date& other)const;
@@ -19,12 +20,5 @@ public:
     bool operator <= (Date& other)const;
     bool operator >= (Date& other)const;
 };
-
-void setValue(std::string &inClassVar, std::string value, int precision, int defaultValue);
-void reverseString(std::string &str);
-int toInt(std::string str);
-std::string toString(int number);
-std::string padStart(std::string member, int count, std::string str);
-
 
 #endif // __DATE_H

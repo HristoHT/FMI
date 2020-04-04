@@ -1,8 +1,7 @@
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest.h"
-#include<string>
-#include<iostream>
-#include<vector>
+#include "used-libs.cpp"
+
 #include "Date.cpp"
 //#include "Good.cpp"
 
