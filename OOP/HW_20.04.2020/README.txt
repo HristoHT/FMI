@@ -1,0 +1,1 @@
+﻿Data.bin i users.txt sa primerni failove, s koito raboti programata.

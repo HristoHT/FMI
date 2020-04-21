@@ -1,0 +1,18 @@
+registration user1
+registration user2
+registration user3
+registration user
+challenge user #challenge1 user1 user2
+challenge user #challenge2 user user3
+challenge user #challenge3 user1
+challenge user #challenge4 user1 user2 user3 user
+finish 0 #challenge1 5
+profile_info user1
+finish 0 #challenge1 5
+finish 1 #challenge2 -2
+finish 1 #challenge2 -2
+finish 2 #challenge3 3
+finish 3 #challenge2 5
+finish 2 #challenge5 10
+finish 0 #challenge4 10
+finish 0 #challenge4 5
