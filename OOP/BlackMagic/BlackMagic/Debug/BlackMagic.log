@@ -1,0 +1,3 @@
+﻿  BlackMagic.cpp
+C:\Users\hrist\source\repos\BlackMagic\BlackMagic\BlackMagic.h(262): warning C4715: 'MergeIterator2<MergeIterator<std::_Vector_iterator<std::_Vector_val<std::_Simple_types<int> > > >,std::_Vector_iterator<std::_Vector_val<std::_Simple_types<int> > > >::operator!=': not all control paths return a value
+  BlackMagic.vcxproj -> C:\Users\hrist\source\repos\BlackMagic\Debug\BlackMagic.exe

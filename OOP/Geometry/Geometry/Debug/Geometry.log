@@ -1,0 +1,8 @@
+﻿  Geometry.cpp
+Geometry.obj : error LNK2019: unresolved external symbol _GdiplusStartup@12 referenced in function _main
+Geometry.obj : error LNK2019: unresolved external symbol _GdipCreatePen1@16 referenced in function "public: __thiscall Gdiplus::Pen::Pen(class Gdiplus::Color const &,float)" (??0Pen@Gdiplus@@QAE@ABVColor@1@M@Z)
+Geometry.obj : error LNK2019: unresolved external symbol _GdipDeletePen@4 referenced in function "public: __thiscall Gdiplus::Pen::~Pen(void)" (??1Pen@Gdiplus@@QAE@XZ)
+Geometry.obj : error LNK2019: unresolved external symbol _GdipCreateFromHDC@8 referenced in function "public: __thiscall Gdiplus::Graphics::Graphics(struct HDC__ *)" (??0Graphics@Gdiplus@@QAE@PAUHDC__@@@Z)
+Geometry.obj : error LNK2019: unresolved external symbol _GdipDeleteGraphics@4 referenced in function "public: __thiscall Gdiplus::Graphics::~Graphics(void)" (??1Graphics@Gdiplus@@QAE@XZ)
+Geometry.obj : error LNK2019: unresolved external symbol _GdipDrawLineI@24 referenced in function "public: enum Gdiplus::Status __thiscall Gdiplus::Graphics::DrawLine(class Gdiplus::Pen const *,int,int,int,int)" (?DrawLine@Graphics@Gdiplus@@QAE?AW4Status@2@PBVPen@2@HHHH@Z)
+C:\Users\hrist\source\repos\Geometry\Debug\Geometry.exe : fatal error LNK1120: 6 unresolved externals

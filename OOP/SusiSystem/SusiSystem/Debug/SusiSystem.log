@@ -1,0 +1,4 @@
+﻿  Line.cpp
+C:\Users\hrist\source\repos\SusiSystem\SusiSystem\Line.cpp(35,8): warning C4834: discarding return value of function with 'nodiscard' attribute
+C:\Users\hrist\source\repos\SusiSystem\SusiSystem\Line.cpp(130,24): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  SusiSystem.vcxproj -> C:\Users\hrist\source\repos\SusiSystem\Debug\SusiSystem.exe
